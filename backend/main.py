@@ -15,7 +15,7 @@ app = FastAPI(
 
 # ── Load artifacts ────────────────────────────────────────────
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
-MODEL_DIR = os.path.join(BASE_DIR, "..", "models")
+MODEL_DIR = os.getenv("MODEL_DIR", os.path.join(BASE_DIR, "..", "models"))
 
 preprocessor  = joblib.load(os.path.join(MODEL_DIR, "preprocessor.pkl"))
 label_encoder = joblib.load(os.path.join(MODEL_DIR, "label_encoder.pkl"))
