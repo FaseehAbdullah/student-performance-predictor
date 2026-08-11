@@ -1,7 +1,7 @@
-# Data and models � DVC handles these
+# Data and models — DVC handles these
 data/
-models/
-*.pkl
+# models/       ← comment this out temporarily
+*.pkl           ← comment this out too
 
 # Python
 __pycache__/
