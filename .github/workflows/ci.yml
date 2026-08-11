@@ -1,62 +1,31 @@
-- name: Create dummy model artifacts
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
         run: |
-          python - <<'EOF'
-          import joblib
-          import numpy as np
-          import os
-          from sklearn.ensemble import RandomForestClassifier
-          from sklearn.preprocessing import StandardScaler, LabelEncoder
+          python -m pip install --upgrade pip
+          pip install fastapi uvicorn scikit-learn pandas numpy joblib shap pydantic pytest httpx
 
-          os.makedirs("models", exist_ok=True)
+      - name: Create dummy model artifacts
+        run: python create_dummy_artifacts.py
 
-          num_cols = [
-              "age", "Medu", "Fedu", "traveltime", "studytime",
-              "failures", "famrel", "freetime", "goout",
-              "Dalc", "Walc", "health", "absences"
-          ]
-          binary_cols = [
-              "sex", "address", "famsize", "Pstatus",
-              "schoolsup", "famsup", "paid", "activities",
-              "nursery", "higher", "internet", "romantic"
-          ]
-          ohe_cols = [
-              "school_MS",
-              "Mjob_health", "Mjob_other", "Mjob_services", "Mjob_teacher",
-              "Fjob_health", "Fjob_other", "Fjob_services", "Fjob_teacher",
-              "reason_home", "reason_other", "reason_reputation",
-              "guardian_mother", "guardian_other"
-          ]
-          feature_cols = num_cols + binary_cols + ohe_cols
-          n_features = len(feature_cols)
-          print(f"Total features: {n_features}")
-
-          # Label encoder — fitted on grade strings
-          le = LabelEncoder()
-          le.fit(["A", "B", "C", "D", "F"])
-          joblib.dump(le, "models/label_encoder.pkl")
-
-          # Training data — y must be encoded integers, not strings
-          # This matches how the real model was trained
-          X_dummy = np.random.rand(25, n_features)
-          y_strings = ["A", "B", "C", "D", "F"] * 5
-          y_encoded = le.transform(y_strings)  # [0,1,2,3,4,0,1,2,3,4,...]
-
-          clf = RandomForestClassifier(n_estimators=5, random_state=42)
-          clf.fit(X_dummy, y_encoded)
-          joblib.dump(clf, "models/best_model.pkl")
-          print(f"Model classes: {clf.classes_}")  # should be [0,1,2,3,4]
-
-          # Preprocessor
-          scaler = StandardScaler()
-          scaler.fit(X_dummy[:, :len(num_cols)])
-
-          preprocessor = {
-              "scaler"       : scaler,
-              "num_cols"     : num_cols,
-              "feature_cols" : feature_cols
-          }
-          joblib.dump(preprocessor, "models/preprocessor.pkl")
-
-          print("All artifacts created successfully.")
-          print(f"Label encoder classes: {le.classes_}")
-          EOF
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
