@@ -1,0 +1,17 @@
+# Data and models — DVC handles these
+data/
+models/
+*.pkl
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# DVC cache
+.dvc/cache
+.dvc/tmp
