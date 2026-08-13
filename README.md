@@ -12,7 +12,7 @@
 ---
 
 ## 📌 Project Overview
-
+ 
 Most student performance models cheat — they include mid-year grades (G1, G2) which directly reveal the final grade (G3). This project deliberately drops both to build something that works in the real world, where you only have student background and behavioural data.
 
 A conversational Streamlit chat UI collects 8 inputs from the student, sends them to a FastAPI backend, and returns a predicted grade with a SHAP explanation showing exactly which factors drove the prediction.
