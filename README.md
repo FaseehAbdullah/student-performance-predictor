@@ -5,7 +5,7 @@
 ## 🔗 Live Demo
 
 | | Link |
-|--|------|
+|--|------| 
 | 💬 Chat UI | [student-performance-predictor.streamlit.app](https://student-performance-predictor-dd8772djbyemqgdbpkqwqh.streamlit.app/) |
 | ⚙️ API Docs | [student-performance-predictor.railway.app/docs](https://student-performance-predictor-production-7884.up.railway.app/docs) |
 
