@@ -3,7 +3,7 @@
 # 🎓 Student Performance Predictor
 
 ## 🔗 Live Demo
-
+ 
 | | Link |
 |--|------| 
 | 💬 Chat UI | [student-performance-predictor.streamlit.app](https://student-performance-predictor-dd8772djbyemqgdbpkqwqh.streamlit.app/) |
